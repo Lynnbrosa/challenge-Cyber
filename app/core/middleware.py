@@ -53,9 +53,30 @@ class RequestIdMiddleware(BaseHTTPMiddleware):
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     """
     Headers OWASP secure baseline.
-    nginx no front também aplica HSTS; este middleware é defesa em profundidade
-    e ainda atua quando o backend é exposto direto (dev).
+
+    O CSP restritivo (default-src 'none') é aplicado em endpoints de API
+    — eles só respondem JSON e não devem carregar nenhum recurso de origem.
+
+    Para os paths de documentação (/docs, /redoc, /openapi.json) usamos um
+    CSP mais permissivo permitindo 'self' + inline + CDN do Swagger UI,
+    senão o próprio Swagger UI fica em branco no navegador (sem CSS/JS).
     """
+
+    DOC_PATHS = ("/docs", "/redoc", "/openapi.json")
+
+    CSP_DOCS = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+        "img-src 'self' data: https://cdn.jsdelivr.net https://fastapi.tiangolo.com; "
+        "font-src 'self' data: https://cdn.jsdelivr.net; "
+        "connect-src 'self'; "
+        "frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    )
+
+    CSP_API = (
+        "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
+    )
 
     async def dispatch(self, request: Request, call_next):
         response: Response = await call_next(request)
@@ -66,7 +87,8 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["Permissions-Policy"] = (
             "geolocation=(), microphone=(), camera=(), payment=(), usb=()"
         )
-        response.headers["Content-Security-Policy"] = (
-            "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
-        )
+
+        path = request.url.path
+        is_docs = any(path.startswith(p) for p in self.DOC_PATHS)
+        response.headers["Content-Security-Policy"] = self.CSP_DOCS if is_docs else self.CSP_API
         return response
