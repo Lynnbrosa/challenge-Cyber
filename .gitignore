@@ -9,9 +9,10 @@ venv/
 dist/
 build/
 
-# Secrets
+# Secrets — NUNCA commitar chaves nem certs, nem que sejam de dev
 keys/
 nginx/certs/*.key
+nginx/certs/*.crt
 nginx/certs/*.pem
 
 # IDE
