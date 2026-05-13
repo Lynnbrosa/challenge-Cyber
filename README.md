@@ -7,6 +7,11 @@ Stack: **FastAPI · SQLAlchemy 2 · Pydantic v2 · PostgreSQL · Alembic · stru
 > Ford é o **controlador** dos dados; este sistema atua como **operador** (LGPD Art. 5º, VIII).
 > Threat model STRIDE completo em [threat_model.md](threat_model.md).
 
+**Repositórios irmãos da challenge:**
+[`challenge-SOA`](https://github.com/Lynnbrosa/challenge-SOA) (backend Java/Spring Boot, mesmo domínio de negócio) ·
+[`challenge-Mobile`](https://github.com/Lynnbrosa/challenge-Mobile) (app React Native do consultor) ·
+[`challenge-IAML`](https://github.com/Lynnbrosa/challenge-IAML) (notebook IA/ML + gerador de seed)
+
 ## Estrutura
 
 ```
