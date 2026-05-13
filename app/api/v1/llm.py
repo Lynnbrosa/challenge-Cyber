@@ -11,7 +11,7 @@ Rate limit agressivo (10 req/min) porque chamadas a LLM têm custo financeiro
 e podem ser exploradas para data exfiltration via prompt injection — só
 Admin e Analista podem chamar.
 """
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Request, Response
 from pydantic import BaseModel, Field
 
 from app.core.config import get_settings
@@ -37,6 +37,7 @@ class LlmResponse(BaseModel):
 @limiter.limit(get_settings().rate_limit_llm)
 def consult(
     request: Request,
+    response: Response,
     payload: LlmRequest,
     principal: Principal = Depends(requires_role(Role.ADMIN, Role.ANALISTA)),
 ) -> LlmResponse:

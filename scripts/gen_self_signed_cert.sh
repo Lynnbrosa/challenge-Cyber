@@ -12,7 +12,8 @@ if [[ -f "$OUT_DIR/dev.crt" ]]; then
     exit 0
 fi
 
-openssl req -x509 -newkey rsa:2048 -nodes -days 365 \
+# MSYS_NO_PATHCONV=1 evita que Git Bash no Windows traduza o -subj "/C=BR/..." pra path absoluto.
+MSYS_NO_PATHCONV=1 openssl req -x509 -newkey rsa:2048 -nodes -days 365 \
     -keyout "$OUT_DIR/dev.key" \
     -out    "$OUT_DIR/dev.crt" \
     -subj "/C=BR/ST=SP/L=Sao Paulo/O=PrevioPLS Dev/CN=localhost" \
