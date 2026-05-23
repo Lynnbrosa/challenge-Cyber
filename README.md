@@ -1,3 +1,8 @@
+Nomes e RMs,
+Giovanne Charelli Zaniboni Silva | 556223 
+Leonardo Pasquini Baldaia | 557416 
+Gustavo Oliveira de Moura | 555827 
+Lynn Bueno Rosa | 551102
 # PrevioPLS Security API
 
 Backend Python da plataforma **Ford Predict & Care**, focado nos controles de **Cybersecurity** e **LGPD** exigidos pela challenge FIAP 2026 (disciplina Cybersecurity, 100 pts).
